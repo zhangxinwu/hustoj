@@ -46,7 +46,7 @@
 <td width=10% align=center><b><?php echo $MSG_RATIO?></b>  
 </tr>
 </thead>
-<tbody>+
+<tbody>
 <?php
 $cnt=0;
 foreach($view_rank as $row){
