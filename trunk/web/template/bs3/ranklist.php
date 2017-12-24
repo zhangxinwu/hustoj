@@ -43,10 +43,10 @@
 <td width=55% align=center><b><?php echo $MSG_NICK?></b>
 <td width=10% align=center><b><?php echo $MSG_AC?></b>
 <td width=10% align=center><b><?php echo $MSG_SUBMIT?></b>
-<td width=10% align=center><b><?php echo $MSG_RATIO?></b>
+<td width=10% align=center><b><?php echo $MSG_RATIO?></b>  
 </tr>
 </thead>
-<tbody>
+<tbody>+
 <?php
 $cnt=0;
 foreach($view_rank as $row){
