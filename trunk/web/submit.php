@@ -15,7 +15,7 @@ $user_id=$_SESSION['user_id'];
         $result=mysql_query_cache($sql);
          $row=$result[0];
         if($row[0]>50) $OJ_VCODE=true;
-        
+$OJ_VCODE = false;
 if($OJ_VCODE)$vcode=$_POST["vcode"];
 $err_str="";
 $err_cnt=0;
