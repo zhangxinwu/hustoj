@@ -103,6 +103,31 @@ require_once("include/set_get_key.php");
 echo "</center>";
 ?>
       </div>
+<?php
+$view_recommand=Array();
+if(isset($_GET['id'])){
+    $id=intval($_GET['id']);
+    if(isset($_SESSION['user_id']))$user_id=($_SESSION['user_id']);
+    $sql="select source from problem where problem_id=?";
+    $result=pdo_query($sql,$id);
+    $source=$result[0][0];
+    $sql="select problem_id from problem where source like ? and problem_id!    =? limit 10";
+    $result=pdo_query( $sql,"%$source%",$id);
+    $i=0;
+    foreach($result as $row){
+        $view_recommand[$i][0]=$row['problem_id'];
+        $i++;
+    }
+}
+?>
+Recommanded Next Problem<br>
+<?php
+$cnt=1;
+foreach($view_recommand as $row){
+echo "<a href=problem.php?id=$row[0]>$row[0]</a>&nbsp;";
+$cnt++;
+}
+?>
 
     </div> <!-- /container -->
 
