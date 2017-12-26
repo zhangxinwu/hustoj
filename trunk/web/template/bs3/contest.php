@@ -55,11 +55,10 @@ echo "&nbsp;&nbsp;<span class=red>Private</font>";
 <thead>
 <tr align=center class='toprow'>
 <td width='5'>
-<td style="cursor:hand" onclick="sortTable('problemset', 1, 'int');" ><?php echo $MSG_PROBLEM_ID?>
+<td style="cursor:hand" onclick="sortTable('problemset', 1, 'int');" width='20%'; align='left'><?php echo $MSG_PROBLEM_ID?>
 <td width='60%'><?php echo $MSG_TITLE?></td>
-<td width='10%'><?php echo $MSG_SOURCE?></td>
-<td style="cursor:hand" onclick="sortTable('problemset', 4, 'int');" width='5%'><?php echo $MSG_AC?></td>
-<td style="cursor:hand" onclick="sortTable('problemset', 5, 'int');" width='5%'><?php echo $MSG_SUBMIT?></td>
+<td style="cursor:hand" onclick="sortTable('problemset', 3, 'int');" width='5%'><?php echo $MSG_AC?></td>
+<td style="cursor:hand" onclick="sortTable('problemset', 4, 'int');" width='5%'><?php echo $MSG_SUBMIT?></td>
 </tr>
 </thead>
 <tbody>

@@ -148,9 +148,8 @@
 					$view_problemset[$cnt][0]=check_ac($cid,$cnt);
 				$view_problemset[$cnt][1]= $row['pid']." Problem &nbsp;".$PID[$cnt];
 				$view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>".$row['title']."</a>";
-				$view_problemset[$cnt][3]=$row['source'] ;
-				$view_problemset[$cnt][4]=$row['accepted'] ;
-				$view_problemset[$cnt][5]=$row['submit'] ;
+				$view_problemset[$cnt][3]=$row['accepted'] ;
+				$view_problemset[$cnt][4]=$row['submit'] ;
 				$cnt++;
 			}
 		
