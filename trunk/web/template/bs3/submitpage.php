@@ -85,10 +85,12 @@ echo"<option value=$i ".( $lastlang==$i?"selected":"").">
 }
 ?>
 </select>
-<?php if($OJ_VCODE){?>
-<?php echo $MSG_VCODE?>:
-<input name="vcode" size=4 type=text><img id="vcode" alt="click to change" src="vcode.php" onclick="this.src='vcode.php?'+Math.random()">
-<?php }?>
+/**
+* <?php if($OJ_VCODE){?>
+* <?php echo $MSG_VCODE?>:
+* <input name="vcode" size=4 type=text><img id="vcode" alt="click to change" src="vcode.php" onclick="this.src='vcode.php?'+Math.random()">
+* <?php }?>
+*/
 
 <br>
 </span>
