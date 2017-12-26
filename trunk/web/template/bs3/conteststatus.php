@@ -108,7 +108,6 @@ echo "<input type=submit class='form-control' value='$MSG_SEARCH'></form>";
 <th class='hidden-xs' ><?php echo $MSG_LANG?>
 <th class='hidden-xs' ><?php echo $MSG_CODE_LENGTH?>
 <th ><?php echo $MSG_SUBMIT_TIME?>
-<th class='hidden-xs' ><?php echo $MSG_JUDGER?>
 </tr>
 </thead>
 <tbody>
@@ -121,13 +120,16 @@ else
 echo "<tr class='evenrow'>";
 $i=0;
 foreach($row as $table_cell){
-	if($i>3&&$i!=8)
-		echo "<td class='hidden-xs'>";
-	else
-		echo "<td>";
-	echo $table_cell;
-	echo "</td>";
-	$i++;
+  if($i < 9)
+  {
+	  if($i>3&&$i!=8)
+	  	echo "<td class='hidden-xs'>";
+	  else
+	  	echo "<td>";
+	  echo $table_cell;
+	  echo "</td>";
+    $i++;
+  }
 }
 echo "</tr>";
 $cnt=1-$cnt;
