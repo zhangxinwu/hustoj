@@ -45,7 +45,7 @@
 <?php if(isset($_GET['cid'])){
 	$cid=intval($_GET['cid']);
 ?>
-	      <li><a>[</a></li>
+<br>
               <li class="active" ><a href="<?php echo $path_fix?>contest.php?cid=<?php echo $cid?>">
 			<?php echo $MSG_PROBLEMS?>
 	      </a></li>
@@ -55,13 +55,9 @@
               <li  class="active" ><a href="<?php echo $path_fix?>contestrank.php?cid=<?php echo $cid?>">
 			<?php echo $MSG_RANKLIST?>
 	      </a></li>
-              <li  class="active" ><a href="<?php echo $path_fix?>contestrank-oi.php?cid=<?php echo $cid?>">OI
-			<?php echo $MSG_RANKLIST?>
-	      </a></li>
               <li  class="active" ><a href="<?php echo $path_fix?>conteststatistics.php?cid=<?php echo $cid?>">
 			<?php echo $MSG_STATISTICS?>
 	      </a></li>
-	      <li><a>]</a></li>
 <?php }?>
               <!--<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
