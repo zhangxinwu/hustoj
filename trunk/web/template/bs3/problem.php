@@ -120,12 +120,15 @@ if(isset($_GET['id'])){
     }
 }
 ?>
-Recommanded Next Problem<br>
 <?php
+if(!isset($_GET['cid']))
+{
+echo "Recommanded Next Problem<br>";
 $cnt=1;
 foreach($view_recommand as $row){
 echo "<a href=problem.php?id=$row[0]>$row[0]</a>&nbsp;";
 $cnt++;
+}
 }
 ?>
 
