@@ -936,7 +936,7 @@ int compile(int lang,char * work_dir) {
 	//		"import py_compile; py_compile.compile(r'Main.py')", NULL };
 	const char * CP_PH[] = { "php", "-l", "Main.php", NULL };
 	const char * CP_PL[] = { "perl", "-c", "Main.pl", NULL };
-	const char * CP_CS[] = { "gmcs", "-warn:0", "Main.cs", NULL };
+	const char * CP_CS[] = { "mcs", "-warn:0", "Main.cs", NULL };
 	const char * CP_OC[] = { "gcc", "-o", "Main", "Main.m",
 			"-fconstant-string-class=NSConstantString", "-I",
 			"/usr/include/GNUstep/", "-L", "/usr/lib/GNUstep/Libraries/",
@@ -1603,8 +1603,10 @@ void copy_perl_runtime(char * work_dir) {
 	copy_shell_runtime(work_dir);
 	execute_cmd("/bin/mkdir %s/usr", work_dir);
 	execute_cmd("/bin/mkdir %s/usr/lib", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libperl* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/bin/perl* %s/", work_dir);
+	execute_cmd("/bin/mkdir %s/usr/lib64", work_dir);
+	execute_cmd("/bin/cp -a /usr/lib/libperl* %s/usr/lib/", work_dir);
+	execute_cmd("/bin/cp -a /usr/lib64/perl* %s/usr/lib64/", work_dir);	
+	execute_cmd("/bin/cp -a /usr/bin/perl* %s/", work_dir);
 
 }
 void copy_freebasic_runtime(char * work_dir) {
