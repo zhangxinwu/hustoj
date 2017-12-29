@@ -1505,18 +1505,21 @@ void copy_bash_runtime(char * work_dir) {
 }
 void copy_ruby_runtime(char * work_dir) {
 
-        copy_shell_runtime(work_dir);
-        execute_cmd("mkdir -p %s/usr", work_dir);
-        execute_cmd("mkdir -p %s/usr/lib", work_dir);
-        execute_cmd("mkdir -p %s/usr/lib64", work_dir);
-        execute_cmd("cp -a /usr/lib/libruby* %s/usr/lib/", work_dir);
-        execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
-        execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
-        execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
-        execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
-        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
-        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
-
+         copy_shell_runtime(work_dir);
+         execute_cmd("mkdir -p %s/usr", work_dir);
+         execute_cmd("mkdir -p %s/usr/lib", work_dir);
+         execute_cmd("mkdir -p %s/usr/lib64", work_dir);
+         execute_cmd("mkdir -p %s/usr/local/lib/ruby/2.4.0", work_dir);
+         execute_cmd("cp -a /usr/lib/libruby* %s/usr/lib/", work_dir);
+         execute_cmd("cp -a /usr/local/lib/ruby/2.4.0/* %s/usr/local/lib/ruby/2.4.0/", work_dir);
+         execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
+         execute_cmd("cp -a /usr/local/lib/ruby* %s/usr/lib/", work_dir);
+         execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
+         execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
+         execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
+         execute_cmd("cp -a /usr/local/bin/ruby* %s/", work_dir);
+         execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
+         execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
 }
 
 void copy_guile_runtime(char * work_dir) {
