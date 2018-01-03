@@ -224,13 +224,13 @@ void init_syscalls_limits(int lang) {
 	} else if (lang == 7) { // php
 		for (i = 0; i==0||LANG_PHV[i]; i++)
 			call_counter[LANG_PHV[i]] = HOJ_MAX_LIMIT;
-	} else if (lang == 8) { // perl
+	} else if (lang == 8) { // perl 
 		for (i = 0; i==0||LANG_PLV[i]; i++)
 			call_counter[LANG_PLV[i]] = HOJ_MAX_LIMIT;
-	} else if (lang == 9) { // mono c#
+	} else if (lang == 9) { // mono c# 
 		for (i = 0; i==0||LANG_CSV[i]; i++)
 			call_counter[LANG_CSV[i]] = HOJ_MAX_LIMIT;
-	} else if (lang == 10) { //objective c
+	} else if (lang == 10) { //objective c 
 		for (i = 0; i==0||LANG_OV[i]; i++)
 			call_counter[LANG_OV[i]] = HOJ_MAX_LIMIT;
 	} else if (lang == 11) { //free basic
@@ -939,7 +939,7 @@ int compile(int lang,char * work_dir) {
 	const char * CP_CS[] = { "mcs", "-warn:0", "Main.cs", NULL };
 	const char * CP_OC[] = { "gcc", "-o", "Main", "Main.m",
 			"-fconstant-string-class=NSConstantString", "-I",
-			"/usr/include/GNUstep/", "-L", "/usr/lib/GNUstep/Libraries/",
+			"/usr/GNUstep/System/Library/Headers/", "-L", "/usr/GNUstep/System/Library/Libraries/",
 			"-lobjc", "-lgnustep-base", NULL };
 	const char * CP_BS[] = { "fbc","-lang","qb", "Main.bas", NULL };
 	const char * CP_CLANG[]={"clang", "Main.c", "-o", "Main", "-fno-asm", "-Wall",
@@ -1411,73 +1411,74 @@ void copy_shell_runtime(char * work_dir) {
 
 }
 void copy_objc_runtime(char * work_dir) {
-	copy_shell_runtime(work_dir);
-	execute_cmd("/bin/mkdir -p %s/proc", work_dir);
-	execute_cmd("/bin/mount -o bind /proc %s/proc", work_dir);
-	execute_cmd("/bin/mkdir -p %s/lib/", work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/libdbus-1.so.3                          %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/libgcc_s.so.1                           %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/libgcrypt.so.11                         %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/libgpg-error.so.0                       %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/libz.so.1                               %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/tls/i686/cmov/libc.so.6                 %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/tls/i686/cmov/libdl.so.2                %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/tls/i686/cmov/libm.so.6                 %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/tls/i686/cmov/libnsl.so.1               %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/tls/i686/cmov/libpthread.so.0           %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /lib/tls/i686/cmov/librt.so.1                %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libavahi-client.so.3                %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libavahi-common.so.3                %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libdns_sd.so.1                      %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libffi.so.5                         %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libgnustep-base.so.1.19             %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libgnutls.so.26                     %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libobjc.so.2                        %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libtasn1.so.3                       %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libxml2.so.2                        %s/lib/ ",
-			work_dir);
-	execute_cmd(
-			"/bin/cp -aL /usr/lib/libxslt.so.1                        %s/lib/ ",
-			work_dir);
+copy_shell_runtime(work_dir);
+execute_cmd("/bin/mkdir -p %s/proc", work_dir);
+execute_cmd("/bin/mount -o bind /proc %s/proc", work_dir);
+execute_cmd("/bin/mkdir -p %s/lib/", work_dir);
+execute_cmd("/bin/mkdir -p %s/lib64/", work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libdbus-1.so.3                          %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libgcc_s.so.1                           %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libgcrypt.so.11                         %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libgpg-error.so.0                       %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libz.so.1                               %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libc.so.6                				%s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libdl.so.2                				%s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libm.so.6                 				%s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libnsl.so.1               				%s/lib/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/libpthread.so.0           				%s/lib/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /lib64/librt.so.1                				%s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libavahi-client.so.3                %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libavahi-common.so.3                %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libdns_sd.so.1                      %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libffi.so.5                         %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libgnustep-base.so.1.19             %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libgnutls.so.26                     %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libobjc.so.2                        %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libtasn1.so.3                       %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libxml2.so.2                        %s/lib64/ ",
+		work_dir);
+execute_cmd(
+		"/bin/cp -aL /usr/lib64/libxslt.so.1                        %s/lib64/ ",
+		work_dir);
 
 }
 void copy_bash_runtime(char * work_dir) {
