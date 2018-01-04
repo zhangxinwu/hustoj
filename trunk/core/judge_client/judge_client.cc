@@ -224,13 +224,13 @@ void init_syscalls_limits(int lang) {
 	} else if (lang == 7) { // php
 		for (i = 0; i==0||LANG_PHV[i]; i++)
 			call_counter[LANG_PHV[i]] = HOJ_MAX_LIMIT;
-	} else if (lang == 8) { // perl 
+	} else if (lang == 8) { // perl
 		for (i = 0; i==0||LANG_PLV[i]; i++)
 			call_counter[LANG_PLV[i]] = HOJ_MAX_LIMIT;
-	} else if (lang == 9) { // mono c# 
+	} else if (lang == 9) { // mono c#
 		for (i = 0; i==0||LANG_CSV[i]; i++)
 			call_counter[LANG_CSV[i]] = HOJ_MAX_LIMIT;
-	} else if (lang == 10) { //objective c 
+	} else if (lang == 10) { //objective c
 		for (i = 0; i==0||LANG_OV[i]; i++)
 			call_counter[LANG_OV[i]] = HOJ_MAX_LIMIT;
 	} else if (lang == 11) { //free basic
@@ -939,8 +939,8 @@ int compile(int lang,char * work_dir) {
 	const char * CP_CS[] = { "mcs", "-warn:0", "Main.cs", NULL };
 	const char * CP_OC[] = { "gcc", "-o", "Main", "Main.m",
 			"-fconstant-string-class=NSConstantString", "-I",
-			"/usr/GNUstep/System/Library/Headers/", "-L", "/usr/GNUstep/System/Library/Libraries/",
-			"-lobjc", "-lgnustep-base", NULL };
+				"/usr/GNUstep/System/Library/Headers", "-L", "/usr/GNUstep/System/Library/Libraries",
+"-lobjc", "-lgnustep-base", NULL };
 	const char * CP_BS[] = { "fbc","-lang","qb", "Main.bas", NULL };
 	const char * CP_CLANG[]={"clang", "Main.c", "-o", "Main", "-fno-asm", "-Wall",
 	         		"-lm", "--static", "-std=c99", "-DONLINE_JUDGE", NULL };
@@ -1181,6 +1181,8 @@ void _get_solution_http(int solution_id, char * work_dir, int lang) {
 
 }
 void get_solution(int solution_id, char * work_dir, int lang) {
+	char src_pth[BUFFER_SIZE];
+	sprintf(src_pth, "Main.%s", lang_ext[lang]);
 	if (http_judge) {
 		_get_solution_http(solution_id, work_dir, lang);
 	} else {
@@ -1189,7 +1191,7 @@ void get_solution(int solution_id, char * work_dir, int lang) {
 		_get_solution_mysql(solution_id, work_dir, lang);
 #endif
 	}
-
+	execute_cmd("chown judge %s/%s", work_dir,src_pth);
 }
 
 #ifdef _mysql_h
@@ -1506,21 +1508,21 @@ void copy_bash_runtime(char * work_dir) {
 }
 void copy_ruby_runtime(char * work_dir) {
 
-         copy_shell_runtime(work_dir);
-         execute_cmd("mkdir -p %s/usr", work_dir);
-         execute_cmd("mkdir -p %s/usr/lib", work_dir);
-         execute_cmd("mkdir -p %s/usr/lib64", work_dir);
-         execute_cmd("mkdir -p %s/usr/local/lib/ruby/2.4.0", work_dir);
-         execute_cmd("cp -a /usr/lib/libruby* %s/usr/lib/", work_dir);
-         execute_cmd("cp -a /usr/local/lib/ruby/2.4.0/* %s/usr/local/lib/ruby/2.4.0/", work_dir);
-         execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
-         execute_cmd("cp -a /usr/local/lib/ruby* %s/usr/lib/", work_dir);
-         execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
-         execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
-         execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
-         execute_cmd("cp -a /usr/local/bin/ruby* %s/", work_dir);
-         execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
-         execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
+        copy_shell_runtime(work_dir);
+        execute_cmd("mkdir -p %s/usr", work_dir);
+        execute_cmd("mkdir -p %s/usr/lib", work_dir);
+        execute_cmd("mkdir -p %s/usr/lib64", work_dir);
+        execute_cmd("mkdir -p %s/usr/local/lib/ruby/2.4.0", work_dir);
+        execute_cmd("cp -a /usr/lib/libruby* %s/usr/lib/", work_dir);
+        execute_cmd("cp -a /usr/local/lib/ruby/2.4.0/* %s/usr/local/lib/ruby/2.4.0/", work_dir);
+        execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
+        execute_cmd("cp -a /usr/local/lib/ruby* %s/usr/lib/", work_dir);
+        execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
+        execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
+        execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
+        execute_cmd("cp -a /usr/local/bin/ruby* %s/", work_dir);
+        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
+        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
 }
 
 void copy_guile_runtime(char * work_dir) {
@@ -1577,36 +1579,36 @@ void copy_php_runtime(char * work_dir) {
 	copy_shell_runtime(work_dir);
 	execute_cmd("/bin/mkdir %s/usr", work_dir);
 	execute_cmd("/bin/mkdir %s/usr/lib", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libedit* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libdb* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libgssapi_krb5* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libkrb5* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libk5crypto* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/*/libedit* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/*/libdb* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/*/libgssapi_krb5* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/*/libkrb5* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/*/libk5crypto* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/libxml2* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libxml2.so* %s/usr/lib/",work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libicuuc.so* %s/usr/lib/",work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libicudata.so* %s/usr/lib/",work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libstdc++.so* %s/usr/lib/",work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libssl* %s/usr/lib/",work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libcrypto* %s/usr/lib/",work_dir);
-	execute_cmd("/bin/cp /usr/bin/php* %s/", work_dir);
-	execute_cmd("chmod +rx %s/Main.php", work_dir);
-	
-
+	execute_cmd("/bin/mkdir %s/usr/lib64", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libedit* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libdb* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libgssapi_krb5* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libkrb5* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libk5crypto* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/*/libedit* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/*/libdb* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/*/libgssapi_krb5* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/*/libkrb5* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/*/libk5crypto* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/lib* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libxml2* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libxml2.so* %s/usr/lib64/",work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libicuuc.so* %s/usr/lib64/",work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libicudata.so* %s/usr/lib64/",work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libstdc++.so* %s/usr/lib64/",work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libssl* %s/usr/lib64/",work_dir);
+        execute_cmd("/bin/cp /usr/lib64/libcrypto* %s/usr/lib64/",work_dir);
+        execute_cmd("/bin/cp /usr/bin/php* %s/", work_dir);
+        execute_cmd("chmod +rx %s/Main.php", work_dir);
 }
 void copy_perl_runtime(char * work_dir) {
 
 	copy_shell_runtime(work_dir);
 	execute_cmd("/bin/mkdir %s/usr", work_dir);
 	execute_cmd("/bin/mkdir %s/usr/lib", work_dir);
-	execute_cmd("/bin/mkdir %s/usr/lib64", work_dir);
-	execute_cmd("/bin/cp -a /usr/lib/libperl* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp -a /usr/lib64/perl* %s/usr/lib64/", work_dir);	
+        execute_cmd("/bin/mkdir %s/usr/lib64", work_dir);
+        execute_cmd("/bin/cp -a /usr/lib64/perl* %s/usr/lib64/", work_dir); 
+        execute_cmd("/bin/cp -a /usr/lib/libperl* %s/usr/lib/", work_dir);
 	execute_cmd("/bin/cp -a /usr/bin/perl* %s/", work_dir);
 
 }
@@ -1794,11 +1796,11 @@ void run_solution(int & lang, char * work_dir, int & time_lmt, int & usedtime,
 		execl("/bin/bash", "/bin/bash", "Main.sh", (char *) NULL);
 		break;
 	case 6: //Python
-		if(!py2){	
-			execl("/python2", "/python2", "Main.py", (char *) NULL);
-		}else{
+//		if(!py2){	
+//			execl("/python2", "/python2", "Main.py", (char *) NULL);
+//		}else{
 			execl("/python3", "/python3", "Main.py", (char *) NULL);
-		}
+//		}
 		break;
 	case 7: //php
 		execl("/php", "/php", "Main.php", (char *) NULL);
@@ -2087,7 +2089,7 @@ void watch_solution(pid_t pidApp, char * infile, int & ACflg, int isspj,
 		if (WIFSIGNALED(status)) {
 			/*  WIFSIGNALED: if the process is terminated by signal
 			 *
-			 *  psignal(int sig, char *s)，like perror(char *s)，print out s, with error msg from system of sig  
+			 *  psignal(int sig, char *s),like perror(char *s), print out s, with error msg from system of sig  
 			 * sig = 5 means Trace/breakpoint trap
 			 * sig = 11 means Segmentation fault
 			 * sig = 25 means File size limit exceeded
