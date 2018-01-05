@@ -1,0 +1,132 @@
+# complier
+# from other server get these rpm
+# rpm install gcc-4.8.2 gcc-c++-4.8.2 
+# yum install java-1.8.0-jdk
+
+# sh
+sudo yum -y install php httpd php-mysql mysql-server php-xml php-gd gcc-c++  mysql-devel php-mbstring glibc-static libstdc++-static flex
+sudo /etc/init.d/mysqld start
+# update mysql root's password
+mysqladmin -u root password "$PASSWORD"
+
+# get hustoj_master.tar
+# https://github.com/zhblue/hustoj
+# cd hustoj/trunk
+
+
+sudo  /usr/sbin/useradd -m -u 1536 judge
+
+#compile and install the core
+cd core/
+sudo ./make.sh
+
+#install web and db
+cd ..
+cp -R web/ /var/www/html/JudgeOnline
+chmod -R 711 /var/www/html/JudgeOnline
+chown -R apache /var/www/html/JudgeOnline
+cd install/
+mysql -h localhost -uroot -p$PASSWORD < db.sql
+
+#create work dir set default conf
+mkdir /home/judge
+mkdir /home/judge/etc
+mkdir /home/judge/data
+mkdir /home/judge/log
+mkdir /home/judge/run0
+mkdir /home/judge/run1
+mkdir /home/judge/run2
+mkdir /home/judge/run3
+cp java0.policy  judge.conf /home/judge/etc
+
+chown -R apache /home/judge/data
+chown -R root /home/judge/log /home/judge/etc /home/judge/run?
+chmod 711 /home/judge /home/judge/data
+chgrp judge /home/judge/run?
+chmod 771 /home/judge/run?
+
+#update database account
+sed "s/OJ_USER_NAME=root/OJ_USER_NAME=root/g" judge.conf|sed "s/OJ_PASSWORD=root/OJ_PASSWORD=$PASSWORD/g" >/home/judge/etc/judge.conf
+sed "s/DB_USER=\\\"root\\\"/DB_USER=\\\"root\\\"/g" ../web/include/db_info.inc.php|sed "s/DB_PASS=\\\"root\\\"/DB_PASS=\\\"$PASSWORD\\\"/g" >/var/www/html/JudgeOnline/include/db_info.inc.php
+
+chmod -R 000 /home/judge/etc
+
+echo "/usr/bin/judged" > /etc/init.d/judged
+
+chmod +x  /etc/init.d/judged
+ln -s /etc/init.d/judged /etc/rc3.d/S93judged
+ln -s /etc/init.d/judged /etc/rc2.d/S93judged
+/etc/init.d/judged start
+
+/etc/init.d/httpd restart
+
+chcon -R -t httpd_sys_content_t /home/judge/
+chcon -R -t httpd_sys_content_t /var/www/html/
+#   when run chcon return " can't apply partial context to unlabeled file "
+#   cat /etc/selinux/config
+#   vim config: SELINUX=enforcing
+#   reboot
+
+##########################################################
+#   from old_acm_oj get sql
+mysqldump -ujol -pdniijol jol > jol.sql
+
+#   get jol.sql to se-acm_oj
+mysql -uroot -p$PASSWORD jol < jol.sql
+
+#   copy /home/judge/data to se-acm /home/judge/data
+#   ....
+
+
+#########################################################
+#   PHP Warning:  date(): It is not safe to rely on the system's timezone settings.
+#   You are *required* to use the date.timezone setting or the date_default_timezone_set() function.
+#   In case you used any of those methods and you are still getting this warning,
+#   you most likely misspelled the timezone identifier. 
+#   We selected 'Asia/Chongqing' for 'CST/8.0/no DST' instead in /var/www/html/JudgeOnline/lang/cn.php on line 41
+
+## vim /etc/php.ini
+## date.timezone = PRC
+## /etc/init.d/httpd restart
+
+#   close NOTICE
+##  error_reporting = E_ALL&~E_NOTICE
+## /etc/init.d/httpd restart
+
+
+#############################
+# if login old counter fail, could be in /var/www/html/JudgeOnline/include/my_func.inc.php
+# update pwCheck() remove md5
+
+#   /contest.php connect fail
+#   update /contest.php
+#
+#   $view_total_page_tmp=pdo_query("select count(1) from contest where defunct='N'");
+#   $view_total_page=intval($view_total_page_tmp[0][0]/$page_cnt);
+
+
+
+#################################
+#   /etc/httpd/config/httpd.conf
+#   /etc/httpd/conf.d
+chkconfig httpd on  
+chkconfig mysqld on 
+chkconfig memcached on
+
+#################################
+#   Memcache::connect(): Can't connect to 127.0.0.1:11211, Permission denied
+setsebool -P httpd_can_network_connect 1  
+
+#################################
+# compling forever !!!
+$ mysql -uroot -p$PASSWORD 
+
+mysql> use jol;
+
+mysql> alter table solution add column lint_error int UNSIGNED NOT NULL DEFAULT 0;
+Query OK, 640515 rows affected (5.09 sec)
+Records: 640515  Duplicates: 0  Warnings: 0
+
+mysql> alter table solution add column judger CHAR(16) NOT NULL DEFAULT 'LOCAL';
+Query OK, 640515 rows affected (5.06 sec)
+Records: 640515  Duplicates: 0  Warnings: 0
