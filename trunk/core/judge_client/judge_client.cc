@@ -752,7 +752,7 @@ void addceinfo(int solution_id) {
 #ifdef _mysql_h
 void _addreinfo_mysql(int solution_id, const char * filename) {
 	char sql[(1 << 16)], *end;
-	char reinfo[(1 << 16)], *rend;
+	char reinfo[(1 << 16)], *rend;	
 	FILE *fp = fopen(filename, "re");
 	snprintf(sql, (1 << 16) - 1, "DELETE FROM runtimeinfo WHERE solution_id=%d",
 			solution_id);
@@ -763,6 +763,8 @@ void _addreinfo_mysql(int solution_id, const char * filename) {
 		if (rend - reinfo > 40000)
 			break;
 	}
+	if(DEBUG)
+		printf("!!!!!!!!!!!!!!!!\n%s\n", reinfo);
 	rend = 0;
 	end = sql;
 	strcpy(end, "INSERT INTO runtimeinfo VALUES(");

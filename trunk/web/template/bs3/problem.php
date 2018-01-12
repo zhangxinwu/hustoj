@@ -8,7 +8,10 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $OJ_NAME?></title>  
+    <title><?php echo $OJ_NAME?></title> 
+
+    <title><?php if(!isset($_GET['cid']) && iseet($_GET['id'])) echo $_GET['id']||?></title>  
+     
     <?php include("template/$OJ_TEMPLATE/css.php");?>	    
 
 
