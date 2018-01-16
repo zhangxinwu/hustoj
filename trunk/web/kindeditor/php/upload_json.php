@@ -6,10 +6,10 @@
  * 如果您确定直接使用本程序，使用之前请仔细确认相关安全设置。
  *
  */
-@session_start();
-if (!(isset($_SESSION['administrator'])
-      ||isset($_SESSION['problem_editor'])
-      ||isset($_SESSION['contest_creator'])
+require_once("../../include/db_info.inc.php");
+if (!(isset($_SESSION[$OJ_NAME.'_'.'administrator'])
+      ||isset($_SESSION[$OJ_NAME.'_'.'problem_editor'])
+      ||isset($_SESSION[$OJ_NAME.'_'.'contest_creator'])
      )){
         echo "<a href='../loginpage.php'>Please Login First!</a>";
         exit(1);

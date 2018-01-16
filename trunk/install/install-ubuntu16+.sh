@@ -4,11 +4,13 @@ apt-get install -y subversion
 /usr/sbin/useradd -m -u 1536 judge
 cd /home/judge/
 
-svn co https://github.com/zhblue/hustoj/branches/rpi/trunk  src
+svn co https://github.com/zhblue/hustoj/trunk/trunk/  src
 apt-get install -y make flex g++ clang libmysqlclient-dev libmysql++-dev php-fpm nginx mysql-server php-mysql php-gd php-zip fp-compiler openjdk-8-jdk mono-devel php-mbstring php-xml
 
 USER=`cat /etc/mysql/debian.cnf |grep user|head -1|awk  '{print $3}'`
 PASSWORD=`cat /etc/mysql/debian.cnf |grep password|head -1|awk  '{print $3}'`
+CPU=`grep "cpu cores" /proc/cpuinfo |head -1|awk '{print $4}'`
+
 mkdir etc data log
 
 cp src/install/java0.policy  /home/judge/etc
@@ -22,6 +24,8 @@ fi
 sed -i "s/OJ_USER_NAME=root/OJ_USER_NAME=$USER/g" etc/judge.conf
 sed -i "s/OJ_PASSWORD=root/OJ_PASSWORD=$PASSWORD/g" etc/judge.conf
 sed -i "s/OJ_COMPILE_CHROOT=1/OJ_COMPILE_CHROOT=0/g" etc/judge.conf
+sed -i "s/OJ_RUNNING=1/OJ_RUNNING=$CPU/g" etc/judge.conf
+
 chmod 700 etc/judge.conf
 
 sed -i "s/DB_USER=\"root\"/DB_USER=\"$USER\"/g" src/web/include/db_info.inc.php
@@ -42,7 +46,7 @@ sed -i "s:root /var/www/html;:root /home/judge/src/web;:g" /etc/nginx/sites-enab
 sed -i "s:index index.html:index index.php:g" /etc/nginx/sites-enabled/default
 sed -i "s:#location ~ \\\.php\\$:location ~ \\\.php\\$:g" /etc/nginx/sites-enabled/default
 sed -i "s:#\tinclude snippets:\tinclude snippets:g" /etc/nginx/sites-enabled/default
-sed -i "s|#\tfastcgi_pass unix:/var/run/php/php7.0-fpm.sock;|\t fastcgi_pass unix:/run/php/php7.1-fpm.sock;\n\t|g" /etc/nginx/sites-enabled/default
+sed -i "s|#\tfastcgi_pass unix|\tfastcgi_pass unix|g" /etc/nginx/sites-enabled/default
 sed -i "s:}#added_by_hustoj::g" /etc/nginx/sites-enabled/default
 sed -i "s|# deny access to .htaccess files|}#added by hustoj\n\n\n\t# deny access to .htaccess files|g" /etc/nginx/sites-enabled/default
 /etc/init.d/nginx restart
@@ -62,4 +66,6 @@ else
 	echo "exit 0" >> /etc/rc.local
 	
 fi
+ln -s /usr/bin/mcs /usr/bin/gmcs
+
 /usr/bin/judged

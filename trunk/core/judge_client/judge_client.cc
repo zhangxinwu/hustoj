@@ -1194,6 +1194,10 @@ void get_solution(int solution_id, char * work_dir, int lang) {
 #endif
 	}
 	execute_cmd("chown judge %s/%s", work_dir,src_pth);
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 }
 
 #ifdef _mysql_h
