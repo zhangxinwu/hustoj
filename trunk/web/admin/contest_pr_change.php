@@ -1,13 +1,13 @@
 <?php require_once("admin-header.php");
 require_once("../include/check_get_key.php");
 $cid=intval($_GET['cid']);
-	if(!(isset($_SESSION["m$cid"])||isset($_SESSION['administrator']))) exit();
+	if(!(isset($_SESSION[$OJ_NAME.'_'."m$cid"])||isset($_SESSION[$OJ_NAME.'_'.'administrator']))) exit();
 $sql="select `private` FROM `contest` WHERE `contest_id`=?";
 $result=pdo_query($sql,$cid);
 $num=count($result);
 if ($num<1){
 	echo "No Such Problem!";
-	require_once("../oj-footer.php");
+	
 	exit(0);
 }
 $row=$result[0];

@@ -6,7 +6,11 @@
 	require_once('./include/my_func.inc.php');
 	require_once('./include/setlang.php');
 	 
-	if(isset($OJ_EXAM_CONTEST_ID)&&$OJ_EXAM_CONTEST_ID>0){
+	if(
+		(isset($OJ_EXAM_CONTEST_ID)&&$OJ_EXAM_CONTEST_ID>0)||
+		(isset($OJ_ON_SITE_CONTEST_ID)&&$OJ_ON_SITE_CONTEST_ID>0)||
+		(isset($OJ_MAIL)&&!$OJ_MAIL)
+	  ){
 		header("Content-type: text/html; charset=utf-8");
 		echo $MSG_MAIL_NOT_ALLOWED_FOR_EXAM;
 		exit ();
@@ -22,7 +26,7 @@ if (isset($_GET['title'])){
 	$title=htmlentities($_GET['title'],ENT_QUOTES,"UTF-8");
 }
 
-if (!isset($_SESSION['user_id'])){
+if (!isset($_SESSION[$OJ_NAME.'_'.'user_id'])){
 	echo "<a href=loginpage.php>$MSG_Login</a>";
 	require_once("oj-footer.php");
 	exit(0);
@@ -45,7 +49,7 @@ if (isset($_GET['vid'])){
 	$vid=intval($_GET['vid']);
 	$sql="SELECT * FROM `mail` WHERE `mail_id`=?
 								and to_user=?";
-	$result=pdo_query($sql,$vid,$_SESSION['user_id']);
+	$result=pdo_query($sql,$vid,$_SESSION[$OJ_NAME.'_'.'user_id']);
 	 $row=$result[0];
 	$to_user=$row['from_user'];
 	$view_title=$row['title'];
@@ -62,7 +66,7 @@ if(isset($_POST['to_user'])){
 	$to_user = $_POST ['to_user'];
 	$title = $_POST ['title'];
 	$content = $_POST ['content'];
-	$from_user=$_SESSION['user_id'];
+	$from_user=$_SESSION[$OJ_NAME.'_'.'user_id'];
 	if (get_magic_quotes_gpc ()) {
 		$to_user = stripslashes ( $to_user);
 		$title = stripslashes ( $title);
@@ -91,7 +95,7 @@ if(isset($_POST['to_user'])){
 //list mail
 	$sql="SELECT * FROM `mail` WHERE to_user=?
 					order by mail_id desc";
-	$result=pdo_query($sql,$_SESSION['user_id']) ;
+	$result=pdo_query($sql,$_SESSION[$OJ_NAME.'_'.'user_id']) ;
 $view_mail=Array();
 $i=0;
 foreach($result as $row){

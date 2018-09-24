@@ -6,14 +6,14 @@
 </head>
 <body>
 <div id="wrapper">
-	<?php require_once("oj-header.php");?>
+	<?php require_once("template/bs/oj-header.php");?>
 <div id=main>
 	<form action="modify.php" method="post">
 	<br><br>
 	<center><table>
 		<tr><td colspan=2 height=40 width=500>&nbsp;&nbsp;&nbsp;Update Information</tr>
 		<tr><td width=25%>User ID:
-			<td width=75%><?php echo $_SESSION['user_id']?>
+			<td width=75%><?php echo $_SESSION[$OJ_NAME.'_'.'user_id']?>
 			<?php require_once('./include/set_post_key.php');?>
 		</tr>
 		<tr><td>Nick Name:
@@ -44,7 +44,7 @@
 	<a href=export_ac_code.php>Download All AC Source</a>
 	<br>
 <div id=foot>
-	<?php require_once("oj-footer.php");?>
+	<?php require_once("template/bs/oj-footer.php");?>
 
 </div><!--end foot-->
 </div><!--end main-->

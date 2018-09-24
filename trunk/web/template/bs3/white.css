@@ -23,7 +23,7 @@
 }
 .container .jumbotron{
    padding: 5px;
-   background-color: #fff;
+   background-image: url(../../image/background.jpg);
    border: 1px solid #eee;
 }
 
@@ -57,4 +57,7 @@ h3.pagenav div.active{
 
 #problemset {
    margin-top: 20px;
+}
+.hint pre{
+  display:none;
 }

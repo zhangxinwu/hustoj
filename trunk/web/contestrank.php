@@ -22,10 +22,13 @@ class TM{
                 $this->p_ac_sec=array(0);
         }
         function Add($pid,$sec,$res){
+		global $OJ_CE_PENALTY;
 //              echo "Add $pid $sec $res<br>";
                 if (isset($this->p_ac_sec[$pid])&&$this->p_ac_sec[$pid]>0)
                         return;
                 if ($res!=4){
+			if(isset($OJ_CE_PENALTY)&&!$OJ_CE_PENALTY&&$res==11) return;  // ACM WF punish no ce 
+	
                         if(isset($this->p_wa_num[$pid])){
                                 $this->p_wa_num[$pid]++;
                         }else{
@@ -123,8 +126,8 @@ if($OJ_MEMCACHE){
         users.user_id,users.nick,solution.result,solution.num,solution.in_date
                 FROM
                         (select * from solution where solution.contest_id='$cid' and num>=0 and problem_id>0) solution
-                left join users
-                on users.user_id=solution.user_id 
+                inner join users
+                on users.user_id=solution.user_id and users.defunct='N'
         ORDER BY users.user_id,in_date";
         $result = mysql_query_cache($sql);
         if($result) $rows_cnt=count($result);
@@ -134,8 +137,8 @@ if($OJ_MEMCACHE){
         users.user_id,users.nick,solution.result,solution.num,solution.in_date
                 FROM
                         (select * from solution where solution.contest_id=? and num>=0 and problem_id>0) solution
-                left join users
-                on users.user_id=solution.user_id 
+                inner join users
+                on users.user_id=solution.user_id and users.defunct='N'
         ORDER BY users.user_id,in_date";
         $result = pdo_query($sql,$cid);
         if($result) $rows_cnt=count($result);
@@ -158,7 +161,7 @@ for ($i=0;$i<$rows_cnt;$i++){
 
                 $user_name=$n_user;
         }
-        if(time()<$end_time&&$lock<strtotime($row['in_date']))
+        if(time()<$end_time+3600&&$lock<strtotime($row['in_date']))
         	   $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
         else
         	   $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));

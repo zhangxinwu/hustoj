@@ -22,18 +22,18 @@ CREATE TABLE  `contest` (
   PRIMARY KEY (`contest_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 
-CREATE TABLE  `contest_problem` (
-  `problem_id` int(11) NOT NULL DEFAULT 0,
+CREATE TABLE IF NOT EXISTS `contest_problem` (
+  `problem_id` int(11) NOT NULL DEFAULT '0',
   `contest_id` int(11) DEFAULT NULL,
   `title` char(200) NOT NULL DEFAULT '',
-  `num` int(11) NOT NULL DEFAULT 0
+  `num` int(11) NOT NULL DEFAULT '0',
+  KEY `cni` (`contest_id`,`num`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE `loginlog` (
   `user_id` varchar(48) NOT NULL DEFAULT '',
   `password` varchar(40) DEFAULT NULL,
-  `ip` varchar(100) DEFAULT NULL,
+  `ip` varchar(46) DEFAULT NULL,
   `time` datetime DEFAULT NULL,
   KEY `user_log_index` (`user_id`,`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -98,7 +98,7 @@ CREATE TABLE  `reply` (
   `content` text NOT NULL,
   `topic_id` int(11) NOT NULL,
   `status` int(2) NOT NULL DEFAULT '0',
-  `ip` varchar(30) NOT NULL,
+  `ip` varchar(46) NOT NULL,
   PRIMARY KEY (`rid`),
   KEY `author_id` (`author_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -135,7 +135,7 @@ CREATE TABLE  `solution` (
   KEY `pid` (`problem_id`),
   KEY `res` (`result`),
   KEY `cid` (`contest_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM row_format=fixed AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8;
 
 CREATE TABLE  `source_code` (
   `solution_id` int(11) NOT NULL,
@@ -162,20 +162,20 @@ CREATE TABLE  `users` (
   `submit` int(11) DEFAULT '0',
   `solved` int(11) DEFAULT '0',
   `defunct` char(1) NOT NULL DEFAULT 'N',
-  `ip` varchar(20) NOT NULL DEFAULT '',
+  `ip` varchar(46) NOT NULL DEFAULT '',
   `accesstime` datetime DEFAULT NULL,
   `volume` int(11) NOT NULL DEFAULT '1',
   `language` int(11) NOT NULL DEFAULT '1',
   `password` varchar(32) DEFAULT NULL,
   `reg_time` datetime DEFAULT NULL,
-  `nick` varchar(100) NOT NULL DEFAULT '',
-  `school` varchar(100) NOT NULL DEFAULT '',
+  `nick` varchar(20) NOT NULL DEFAULT '',
+  `school` varchar(20) NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `online` (
   `hash` varchar(32) collate utf8_unicode_ci NOT NULL,
-  `ip` varchar(20) character set utf8 NOT NULL default '',
+  `ip` varchar(46) character set utf8 NOT NULL default '',
   `ua` varchar(255) character set utf8 NOT NULL default '',
   `refer` varchar(255) collate utf8_unicode_ci default NULL,
   `lastmove` int(10) NOT NULL,
@@ -197,6 +197,26 @@ CREATE TABLE  `custominput` (
   PRIMARY KEY (`solution_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE  `printer` (
+  `printer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` char(48) NOT NULL,
+  `in_date` datetime NOT NULL DEFAULT '2018-03-13 19:38:00',
+  `status` smallint(6) NOT NULL DEFAULT '0',
+  `worktime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `printer` CHAR(16) NOT NULL DEFAULT 'LOCAL',
+  `content` text NOT NULL ,
+  PRIMARY KEY (`printer_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE  `balloon` (
+  `balloon_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` char(48) NOT NULL,
+  `sid` int(11) NOT NULL ,
+  `cid` int(11) NOT NULL ,
+  `pid` int(11) NOT NULL ,
+  `status` smallint(6) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`balloon_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 delimiter //
 drop trigger if exists simfilter//

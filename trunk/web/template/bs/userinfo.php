@@ -48,7 +48,7 @@ $(function () {
       //alert((new Date()).getTime());
 </script>
 <div id="wrapper">
-	<?php require_once("oj-header.php");?>
+	<?php require_once("template/bs/oj-header.php");?>
 <div id=main>
 
 <center>
@@ -65,10 +65,10 @@ $(function () {
 <script language='javascript'>
 function p(id){document.write("<a href=problem.php?id="+id+">"+id+" </a>");}
 <?php $sql="SELECT DISTINCT `problem_id` FROM `solution` WHERE `user_id`=? AND `result`=4 ORDER BY `problem_id` ASC";	
-if (!($result=pdo_query($sql,$user))) 
+if ($result=pdo_query($sql,$user)){
  foreach($result as $row)
 	echo "p($row[0]);";
-
+}
 ?>
 </script>
 <div id=submission style="width:600px;height:300px" ></div>
@@ -115,7 +115,7 @@ echo "<tr id=pie bgcolor=#D7EBFF><td>Statistics<td><div id='PieDiv' style='posit
 <tr bgcolor=#D7EBFF><td>Email:<td align=center><?php echo $email?></tr>
 </table>
 <?php
- if(isset($_SESSION['administrator'])){
+ if(isset($_SESSION[$OJ_NAME.'_'.'administrator'])){
 
 	 ?><table border=1><tr class=toprow><td>UserID<td>Password<td>IP<td>Time</tr>
 	 <tbody>
@@ -146,7 +146,7 @@ echo "<tr id=pie bgcolor=#D7EBFF><td>Statistics<td><div id='PieDiv' style='posit
 ?>
 </center>
 <div id=foot>
-	<?php require_once("oj-footer.php");?>
+	<?php require_once("template/bs/oj-footer.php");?>
 
 </div><!--end foot-->
 </div><!--end main-->

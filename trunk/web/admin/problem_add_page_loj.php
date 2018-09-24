@@ -10,7 +10,7 @@
 <center>
 <?php require_once("../include/db_info.inc.php");?>
 <?php require_once("admin-header.php");
-if (!(isset($_SESSION['administrator']))){
+if (!(isset($_SESSION[$OJ_NAME.'_'.'administrator']))){
 	echo "<a href='../loginpage.php'>Please Login First!</a>";
 	exit(1);
 }
@@ -69,6 +69,7 @@ include_once("kindeditor.php") ;
   $sourceHTML=$element->outertext;
 ?>
 <form method=POST action="problem_add_loj.php">
+<input type=submit value=Submit name=submit>
 <p align=center><font size=4 color=#333399>Add a Problem</font></p>
 <input type="hidden" name=problem_id value="New Problem">
 <input type="text" name="loj_id" value="<?php echo $loj_id?>">
@@ -95,7 +96,7 @@ include_once("kindeditor.php") ;
 <textarea class="kindeditor" rows=13 name=hint cols=80><?php echo $hintHTML?></textarea>
 </p>
 <p>SpecialJudge: N<input type=radio name=spj value='0' checked>Y<input type=radio name=spj value='1'></p>
-<p align=left>Source:<br><textarea name=source rows=1 cols=70><?php echo $sourceHTML?></textarea></p>
+<p align=left>Source:<br><textarea name=source rows=1 cols=70>LibreOJ<?php echo $sourceHTML?></textarea></p>
 <p align=left>contest:
 	<select  name=contest_id>
 <?php $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `start_time`>NOW() order by `contest_id`";
@@ -111,8 +112,7 @@ if (count($result)==0){
 </p>
 <div align=center>
 <?php require_once("../include/set_post_key.php");?>
-<input type=submit value=Submit name=submit>
 </div></form>
 <p>
-<?php require_once("../oj-footer.php");?>
+
 </body></html>

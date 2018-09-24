@@ -2,7 +2,7 @@
  require_once("admin-header.php");
 ini_set("display_errors","On");
 require_once("../include/check_get_key.php");
-if (!(isset($_SESSION['administrator']))){
+if (!(isset($_SESSION[$OJ_NAME.'_'.'administrator']))){
         echo "<a href='../loginpage.php'>Please Login First!</a>";
         exit(1);
 }
@@ -28,8 +28,8 @@ if (!(isset($_SESSION['administrator']))){
         $max_id++;
         if($max_id<1000)$max_id=1000;
         
-        $sql="ALTER TABLE problem AUTO_INCREMENT = ?";
-        pdo_query($sql,$max_id);
+        $sql="ALTER TABLE problem AUTO_INCREMENT = $max_id";
+        pdo_query($sql);
         ?>
         <script language=javascript>
                 history.go(-1);
